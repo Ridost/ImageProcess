@@ -35,6 +35,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
             this.hScrollBar2 = new System.Windows.Forms.HScrollBar();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
@@ -44,7 +45,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(335, 279);
+            this.pictureBox1.Size = new System.Drawing.Size(567, 309);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -69,7 +70,7 @@
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Location = new System.Drawing.Point(28, 35);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(335, 279);
+            this.panel1.Size = new System.Drawing.Size(567, 309);
             this.panel1.TabIndex = 2;
             // 
             // label1
@@ -94,6 +95,7 @@
             // 
             this.hScrollBar1.LargeChange = 1;
             this.hScrollBar1.Location = new System.Drawing.Point(810, 44);
+            this.hScrollBar1.Maximum = 510;
             this.hScrollBar1.Name = "hScrollBar1";
             this.hScrollBar1.Size = new System.Drawing.Size(161, 20);
             this.hScrollBar1.TabIndex = 101;
@@ -109,11 +111,21 @@
             this.hScrollBar2.TabIndex = 102;
             this.hScrollBar2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar2_Scroll);
             // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Location = new System.Drawing.Point(760, 177);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(168, 23);
+            this.comboBox1.TabIndex = 103;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(990, 466);
+            this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.hScrollBar2);
             this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.label2);
@@ -139,6 +151,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.HScrollBar hScrollBar1;
         private System.Windows.Forms.HScrollBar hScrollBar2;
+        private System.Windows.Forms.ComboBox comboBox1;
     }
 }
 

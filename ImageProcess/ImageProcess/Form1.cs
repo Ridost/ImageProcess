@@ -17,7 +17,7 @@ namespace ImageProcess
         public Form1()
         {
             InitializeComponent();
-            pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
+            pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
         }
         public Bitmap myBitmap;
         public string TempImagePath;
@@ -46,7 +46,14 @@ namespace ImageProcess
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            
+   
+            hScrollBar1.Value = 255;
+            hScrollBar2.Value = 50;
+            comboBox1.Items.Add("Gray-Level");
+            comboBox1.Items.Add("NegativeEffect");
+            comboBox1.Items.Add("Carbon");
+            comboBox1.Items.Add("Cold-Feeling");
+            comboBox1.Items.Add("Warm-Feeling");
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -87,14 +94,39 @@ namespace ImageProcess
             objGraphic.DrawLine(pen, endX, startY, endX, endY);
         }
 
-        private void hScrollBar1_Scroll(object sender, ScrollEventArgs e)
-        {
-            Console.WriteLine(hScrollBar1.Value.ToString());
-        }
+        
 
         private void hScrollBar2_Scroll(object sender, ScrollEventArgs e)
         {
-            Console.WriteLine(hScrollBar2.Value.ToString());
+            if (e.Type == ScrollEventType.EndScroll && isLoaded)
+            {
+                string basedir = dir.Parent.Parent.Parent.Parent.FullName;
+                string pyexePath = basedir + "\\Scripts\\Python\\contrast.py";
+                string outputPath = "temp.png";
+                string gamma;
+                if (hScrollBar2.Value < 50) gamma = ((float)(hScrollBar2.Value + 1) / 50).ToString();
+                else if (hScrollBar2.Value > 51) gamma = ((hScrollBar2.Value - 50) / 4).ToString();
+                else gamma = "1";
+                Console.WriteLine(gamma);
+                Process p = new Process();
+                //p.StartInfo.FileName = pyexePath;//需要執行的檔案路徑
+                p.StartInfo.FileName = "python.exe";
+                p.StartInfo.UseShellExecute = false; //必需
+                p.StartInfo.RedirectStandardOutput = true;//輸出引數設定
+                p.StartInfo.RedirectStandardInput = true;//傳入引數設定
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.Arguments = pyexePath + " " + CurrentImagePath + " " + gamma + " temp.png";//引數以空格分隔，如果某個引數為空，可以傳入””
+                p.Start();
+                string output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+                Console.Write(output);//輸出
+                p.Close();
+
+                FileStream fs;
+                fs = new FileStream("temp.png", FileMode.Open, FileAccess.Read);
+                pictureBox1.Image = System.Drawing.Image.FromStream(fs);
+                fs.Close();
+            }
         }
 
         private void hScrollBar1_Scroll_1(object sender, ScrollEventArgs e)
@@ -104,10 +136,8 @@ namespace ImageProcess
                 string basedir = dir.Parent.Parent.Parent.Parent.FullName;
                 string pyexePath = basedir + "\\Scripts\\Python\\brightness.py";
                 string outputPath = "temp.png";
-                string gamma;
-                if (hScrollBar1.Value < 50) gamma = ((float)(hScrollBar1.Value + 1) / 50).ToString();
-                else if (hScrollBar1.Value > 51) gamma = ((hScrollBar1.Value - 50) / 2).ToString();
-                else gamma = "1";
+                string brightness = (hScrollBar1.Value-255).ToString();
+
                 Process p = new Process();
                 //p.StartInfo.FileName = pyexePath;//需要執行的檔案路徑
                 p.StartInfo.FileName = "python.exe";
@@ -115,7 +145,7 @@ namespace ImageProcess
                 p.StartInfo.RedirectStandardOutput = true;//輸出引數設定
                 p.StartInfo.RedirectStandardInput = true;//傳入引數設定
                 p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.Arguments = pyexePath + " temp.png " + gamma + " temp.png";//引數以空格分隔，如果某個引數為空，可以傳入””
+                p.StartInfo.Arguments = pyexePath + " "+CurrentImagePath+" " + brightness + " temp.png";//引數以空格分隔，如果某個引數為空，可以傳入””
                 p.Start();
                 string output = p.StandardOutput.ReadToEnd();
                 p.WaitForExit();
@@ -134,6 +164,33 @@ namespace ImageProcess
 
         }
 
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (isLoaded) {
+                string basedir = dir.Parent.Parent.Parent.Parent.FullName;
+                string pyexePath = basedir + "\\Scripts\\Python\\basic_func.py";
+                string outputPath = "temp.png";
+                Process p = new Process();
+                //p.StartInfo.FileName = pyexePath;//需要執行的檔案路徑
+                p.StartInfo.FileName = "python.exe";
+                p.StartInfo.UseShellExecute = false; //必需
+                p.StartInfo.RedirectStandardOutput = true;//輸出引數設定
+                p.StartInfo.RedirectStandardInput = true;//傳入引數設定
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.Arguments = pyexePath +" "+comboBox1.SelectedIndex.ToString()+" "+CurrentImagePath+" temp.png";//引數以空格分隔，如果某個引數為空，可以傳入””
+                p.Start();
+                string output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+                Console.Write(output);//輸出
+                p.Close();
+
+                FileStream fs;
+                fs = new FileStream("temp.png", FileMode.Open, FileAccess.Read);
+                pictureBox1.Image = System.Drawing.Image.FromStream(fs);
+                fs.Close();
+            }
+        }
+
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
         {
             isDragging = false;
@@ -144,7 +201,40 @@ namespace ImageProcess
             if (isDragging == true && isLoaded == true) { 
                 endX = e.X;
                 endY = e.Y;
-               
+
+                if (startX > endX) {
+                    int temp = startX;
+                    startX = endX;
+                    endX = temp;
+                }
+                if (startY > endY) {
+                    int temp = startY;
+                    startY = endY;
+                    endY = temp;
+                }
+                string basedir = dir.Parent.Parent.Parent.Parent.FullName;
+                string pyexePath = basedir + "\\Scripts\\Python\\brightness.py";
+                string outputPath = "temp.png";
+                string brightness = "180";
+
+                Process p = new Process();
+                //p.StartInfo.FileName = pyexePath;//需要執行的檔案路徑
+                p.StartInfo.FileName = "python.exe";
+                p.StartInfo.UseShellExecute = false; //必需
+                p.StartInfo.RedirectStandardOutput = true;//輸出引數設定
+                p.StartInfo.RedirectStandardInput = true;//傳入引數設定
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.Arguments = pyexePath + " " + CurrentImagePath + " " + brightness + " temp.png "+startX+" "+startY+" "+(endX-startX)+" "+(endY-startY);//引數以空格分隔，如果某個引數為空，可以傳入””
+                p.Start();
+                string output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+                Console.Write(output);//輸出
+                p.Close();
+
+                FileStream fs;
+                fs = new FileStream("temp.png", FileMode.Open, FileAccess.Read);
+                pictureBox1.Image = System.Drawing.Image.FromStream(fs);
+                fs.Close();
                 pictureBox1.Refresh();
             }
         }
