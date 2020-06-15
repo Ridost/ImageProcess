@@ -13,7 +13,7 @@ import sys
 ========================================
 sys.argv[2] = input image path.
 sys.argv[3] = output image path.
-sys.argv[4] = output text. (Can not contain white space!!!)
+sys.argv[4] = output text. (English Only and Can not contain white space!!!)
 sys.argv[5] = text font size.
 sys.argv[6] = text color.
                 #       1 : black
@@ -93,7 +93,7 @@ def signature(img_path, out_path, text, size, color):
 
 
 if __name__ == "__main__":
-    if sys.argv[0] == "0":
+    if sys.argv[1] == "0":
         signature(sys.argv[2], sys.argv[3], sys.argv[4], int(sys.argv[5]), sys.argv[6])
     else:
         print("Wrong function choose number, please check again.")
