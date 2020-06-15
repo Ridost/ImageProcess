@@ -18,6 +18,7 @@ namespace ImageProcess
             pictureBox1.SizeMode = PictureBoxSizeMode.StretchImage;
         }
         public Bitmap myBitmap;
+        bool isLoaded = false;
         private void LoadImage_Click(object sender, EventArgs e)
         {
             OpenFileDialog of = new OpenFileDialog();
@@ -30,7 +31,7 @@ namespace ImageProcess
             Bitmap myImage = this.myBitmap;//new Bitmap(fileToDisplay);
                                            //pictureBox1.ClientSize = new Size(xSize, ySize);
             pictureBox1.Image = (Image)myImage;
-            
+            isLoaded = true;
             
            
         }
@@ -56,9 +57,26 @@ namespace ImageProcess
         }
 
         public bool isDragging = false;
+        int startX, startY;
+        int endX, endY;
         private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
         {
             isDragging = true;
+            if (isLoaded == false) return;
+            startX = e.X;
+            startY = e.Y;
+        }
+
+        private void pictureBox1_Paint(object sender, PaintEventArgs e)
+        {
+            if (isLoaded == false) return; 
+            Graphics objGraphic = e.Graphics; 
+            Pen pen = new Pen(Color.White);
+            
+            objGraphic.DrawLine(pen, startX, startY, startX, endY);
+            objGraphic.DrawLine(pen, startX, startY, endX, startY);
+            objGraphic.DrawLine(pen, startX, endY, endX, endY);
+            objGraphic.DrawLine(pen, endX, startY, endX, endY);
         }
 
         private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
@@ -68,7 +86,12 @@ namespace ImageProcess
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
         {
-
+            if (isDragging == true && isLoaded == true) { 
+                endX = e.X;
+                endY = e.Y;
+               
+                pictureBox1.Refresh();
+            }
         }
     }
 }
