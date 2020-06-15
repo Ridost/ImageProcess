@@ -3,7 +3,7 @@ from PIL import Image
 import sys
 
 '''
-sys.argv[0] = function choose. (
+sys.argv[1] = function choose. (
                                 0: rgb2gray
                                 1: neg_effect
                                 2: carbon
@@ -14,8 +14,8 @@ sys.argv[0] = function choose. (
                 # cold feeling 與 warm feeling 不可疊加(只能選其一)
                 # 例 : A.png做完 cold feeling 想要換 warm feeling 不能直接
                 #      用 cold feeling 的結果，需要用原圖。
-sys.argv[1] = input image path.
-sys.argv[2] = output image path.
+sys.argv[2] = input image path.
+sys.argv[3] = output image path.
 
 
 '''
