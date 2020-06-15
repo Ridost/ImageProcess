@@ -31,14 +31,12 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.LoadImage = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.Brightness = new System.Windows.Forms.TrackBar();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.Contrast = new System.Windows.Forms.TrackBar();
+            this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
+            this.hScrollBar2 = new System.Windows.Forms.HScrollBar();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.Brightness)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Contrast)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
@@ -46,7 +44,7 @@
             this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(696, 336);
+            this.pictureBox1.Size = new System.Drawing.Size(335, 279);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -71,15 +69,8 @@
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Location = new System.Drawing.Point(28, 35);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(696, 336);
+            this.panel1.Size = new System.Drawing.Size(335, 279);
             this.panel1.TabIndex = 2;
-            // 
-            // Brightness
-            // 
-            this.Brightness.Location = new System.Drawing.Point(818, 44);
-            this.Brightness.Name = "Brightness";
-            this.Brightness.Size = new System.Drawing.Size(148, 56);
-            this.Brightness.TabIndex = 7;
             // 
             // label1
             // 
@@ -99,23 +90,34 @@
             this.label2.TabIndex = 9;
             this.label2.Text = "對比度";
             // 
-            // Contrast
+            // hScrollBar1
             // 
-            this.Contrast.Location = new System.Drawing.Point(818, 107);
-            this.Contrast.Name = "Contrast";
-            this.Contrast.Size = new System.Drawing.Size(148, 56);
-            this.Contrast.TabIndex = 10;
-            this.Contrast.Scroll += new System.EventHandler(this.trackBar2_Scroll);
+            this.hScrollBar1.LargeChange = 1;
+            this.hScrollBar1.Location = new System.Drawing.Point(810, 44);
+            this.hScrollBar1.Name = "hScrollBar1";
+            this.hScrollBar1.Size = new System.Drawing.Size(161, 20);
+            this.hScrollBar1.TabIndex = 101;
+            this.hScrollBar1.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar1_Scroll_1);
+            this.hScrollBar1.KeyUp += new System.Windows.Forms.KeyEventHandler(this.hScrollBar1_KeyUp);
+            // 
+            // hScrollBar2
+            // 
+            this.hScrollBar2.LargeChange = 1;
+            this.hScrollBar2.Location = new System.Drawing.Point(810, 102);
+            this.hScrollBar2.Name = "hScrollBar2";
+            this.hScrollBar2.Size = new System.Drawing.Size(161, 20);
+            this.hScrollBar2.TabIndex = 102;
+            this.hScrollBar2.Scroll += new System.Windows.Forms.ScrollEventHandler(this.hScrollBar2_Scroll);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(990, 466);
-            this.Controls.Add(this.Contrast);
+            this.Controls.Add(this.hScrollBar2);
+            this.Controls.Add(this.hScrollBar1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.Brightness);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.LoadImage);
             this.Name = "Form1";
@@ -123,8 +125,6 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.panel1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.Brightness)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.Contrast)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,10 +135,10 @@
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Button LoadImage;
         private System.Windows.Forms.Panel panel1;
-        private System.Windows.Forms.TrackBar Brightness;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TrackBar Contrast;
+        private System.Windows.Forms.HScrollBar hScrollBar1;
+        private System.Windows.Forms.HScrollBar hScrollBar2;
     }
 }
 

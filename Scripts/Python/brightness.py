@@ -43,7 +43,7 @@ def main():
     height = image.height
     width = image.width
 
-    if len(sys.argv) > 3:
+    if len(sys.argv) > 4:
         coordinate = ((int)(sys.argv[4]), (int)(sys.argv[5]))
 
         height = int(sys.argv[6])
@@ -60,6 +60,7 @@ def main():
             
     
     image.save(output_path)
+    image.close()
 
 if __name__ == "__main__":
     main()
