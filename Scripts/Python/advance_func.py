@@ -3,6 +3,11 @@ from PIL import Image, ImageDraw, ImageFont
 import sys
 
 '''
+    sys.argv[0]:
+                0 -> signature
+                1 -> 
+
+
 ========================================
                signature
 ========================================
@@ -88,4 +93,7 @@ def signature(img_path, out_path, text, size, color):
 
 
 if __name__ == "__main__":
-    signature(sys.argv[2], sys.argv[3], sys.argv[4], int(sys.argv[5]), sys.argv[6])
+    if sys.argv[0] == "0":
+        signature(sys.argv[2], sys.argv[3], sys.argv[4], int(sys.argv[5]), sys.argv[6])
+    else:
+        print("Wrong function choose number, please check again.")
