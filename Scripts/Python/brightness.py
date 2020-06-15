@@ -62,6 +62,7 @@ def main():
             
     
     image.save(output_path)
+    image.close()
 
 if __name__ == "__main__":
     main()
