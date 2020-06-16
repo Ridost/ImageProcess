@@ -43,7 +43,7 @@ def signature(img_path, out_path, text, size, color):
     w, h = img.size
     drawing = ImageDraw.Draw(img)
 
-    sig_font = ImageFont.truetype('AAntaraDistance-OVA2e.ttf', size=size)
+    sig_font = ImageFont.truetype('AAntaraDistance-OVA2e.ttf',encoding='UTF-8', size=size)
 
     # draw config
 

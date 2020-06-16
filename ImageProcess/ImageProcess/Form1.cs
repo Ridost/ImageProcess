@@ -48,7 +48,7 @@ namespace ImageProcess
 
         private void Form1_Load(object sender, EventArgs e)
         {
-   
+            this.WindowState = FormWindowState.Maximized;
             hScrollBar1.Value = 255;
             hScrollBar2.Value = 50;
             comboBox1.Items.Add("Gray-Level");
@@ -56,6 +56,15 @@ namespace ImageProcess
             comboBox1.Items.Add("Carbon");
             comboBox1.Items.Add("Cold-Feeling");
             comboBox1.Items.Add("Warm-Feeling");
+
+            comboBox2.Items.Add("White");
+            comboBox2.Items.Add("Black");
+            comboBox2.Items.Add("Red");
+            comboBox2.Items.Add("Yellow");
+            comboBox2.Items.Add("Green");
+            comboBox2.Items.Add("BrightBlue");
+            comboBox2.Items.Add("Blue");
+            comboBox2.Items.Add("Purple");
         }
 
         private void pictureBox1_Click(object sender, EventArgs e)
@@ -208,19 +217,103 @@ namespace ImageProcess
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if (startX == 0 && startY == 0 && endX == 0 && endY == 0) return;
             pictureBox1.Image = Cut(this.myBitmap,startX,startY,endX-startX,endY-startY);
             pictureBox1.Image.Save("temp_origin.png");
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-
+            startX = 0; startY = 0; endX = 0; endY = 0;
             FileStream fs;
             fs = new FileStream(CurrentImagePath, FileMode.Open, FileAccess.Read);
             pictureBox1.Image = System.Drawing.Image.FromStream(fs);
             fs.Close();
             new Bitmap(CurrentImagePath).Save("temp_origin.png");
             new Bitmap(CurrentImagePath).Save("temp_revised.png");
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            // Displays a SaveFileDialog so the user can save the Image
+            // assigned to Button2.
+            SaveFileDialog saveFileDialog1 = new SaveFileDialog();
+            saveFileDialog1.Filter = "JPeg Image|*.jpg|Bitmap Image|*.bmp|Gif Image|*.gif";
+            saveFileDialog1.Title = "Save an Image File";
+            saveFileDialog1.ShowDialog();
+
+            // If the file name is not an empty string open it for saving.
+            if (saveFileDialog1.FileName != "")
+            {
+                // Saves the Image via a FileStream created by the OpenFile method.
+                System.IO.FileStream fs =
+                   (System.IO.FileStream)saveFileDialog1.OpenFile();
+                // Saves the Image in the appropriate ImageFormat based upon the
+                // File type selected in the dialog box.
+                // NOTE that the FilterIndex property is one-based.
+                switch (saveFileDialog1.FilterIndex)
+                {
+                    case 1:
+                        this.pictureBox1.Image.Save(fs,
+                           System.Drawing.Imaging.ImageFormat.Jpeg);
+                        break;
+
+                    case 2:
+                        this.pictureBox1.Image.Save(fs,
+                           System.Drawing.Imaging.ImageFormat.Bmp);
+                        break;
+
+                    case 3:
+                        this.pictureBox1.Image.Save(fs,
+                           System.Drawing.Imaging.ImageFormat.Gif);
+                        break;
+                }
+
+                fs.Close();
+            }
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+           
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (textBox1.Text != "" && textBox2.Text != "" && isLoaded)
+            {
+                string basedir = dir.Parent.Parent.Parent.Parent.FullName;
+                string pyexePath = basedir + "\\Scripts\\Python\\advance_func.py";
+                string outputPath = "temp_origin.png";
+                Process p = new Process();
+                //p.StartInfo.FileName = pyexePath;//需要執行的檔案路徑
+                p.StartInfo.FileName = "python.exe";
+                p.StartInfo.UseShellExecute = false; //必需
+                p.StartInfo.RedirectStandardOutput = true;//輸出引數設定
+                p.StartInfo.RedirectStandardInput = true;//傳入引數設定
+                p.StartInfo.CreateNoWindow = true;
+                p.StartInfo.Arguments = pyexePath + " 0 temp_origin.png temp_revised.png " + textBox1.Text + " " + textBox2.Text + " " + comboBox2.SelectedIndex.ToString();
+                p.Start();
+                string output = p.StandardOutput.ReadToEnd();
+                p.WaitForExit();
+                Console.WriteLine(p.StartInfo.Arguments);
+                p.Close();
+
+                FileStream fs;
+                fs = new FileStream("temp_revised.png", FileMode.Open, FileAccess.Read);
+                pictureBox1.Image = System.Drawing.Image.FromStream(fs);
+                fs.Close();
+
+            }
         }
 
         private void pictureBox1_MouseMove(object sender, MouseEventArgs e)
